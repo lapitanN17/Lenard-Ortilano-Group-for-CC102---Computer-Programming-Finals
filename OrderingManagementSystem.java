@@ -22,6 +22,7 @@ public class OrderingManagementSystem {
             //Update accountCount always
             int checkAccounts = 0;
             for (String i : accounts) {
+                //If i is not null then increment accountCount
                 if (i != null) checkAccounts++;
             }
             accountCount = checkAccounts;
@@ -46,8 +47,8 @@ public class OrderingManagementSystem {
                         continue;
                     }
                     
-                    int loginIndex = login(br, accounts, customerEmail, customerPassword, customerName, accountCount);
-                    if (loginIndex != -1) {
+                    int loginIndex = login(br, accounts, customerEmail, customerPassword, customerName, accountCount); //<Call Function
+                    if (loginIndex != -1) { //<Proceed to login when you sucessfully input correct login details ad function doesn't return (-1) anymore
                         String loggedInEmail = accounts[loginIndex].split(",")[0];
                         orderingInterface(br, accounts, customerEmail, customerPassword, customerName, accountCount, menuOptions, menuCost, customerCart, loggedInEmail, loginIndex, purchasedOrders, customerCartAmount);
                     }
@@ -70,15 +71,22 @@ public class OrderingManagementSystem {
                         }
                     }
                     
-                    customerPassword = password(br);
+                    customerPassword = password(br); //<Call Function
                     if (customerPassword == null) continue;
-                    customerName = username(br);
+                    customerName = username(br); //<Call Function
                     if (customerName == null) continue;
                     
+                    
+                    //Register Account
                     accounts[accountCount] = customerEmail + "," + customerPassword + "," + customerName;
                     accountCount++;
                     
-                    System.out.println("\nSuccessfull Registration!!");
+                    try {
+                        System.out.println("\nRegistration In Process\nPlease Wait...");
+                        Thread.sleep(2000);
+                        System.out.println("\nRegistration Successful");
+                    } catch (InterruptedException e) {
+                    }
                     break;
             }
         }
@@ -94,7 +102,7 @@ public class OrderingManagementSystem {
                     System.out.println("Invalid Email Address!");
                     continue;
                 }
-                return enterEmail.trim();
+                return enterEmail.trim(); //<Return email value
             } catch (IOException e) {
                 System.out.println("Error");
             }
@@ -117,7 +125,7 @@ public class OrderingManagementSystem {
                     System.out.println("Password must at least have a minimum of 8 characters");
                     continue;
                 }
-                return enterPassword;
+                return enterPassword; //<Return password value
             } catch (IOException e) {
                 System.out.println("Error");
             }
@@ -133,7 +141,7 @@ public class OrderingManagementSystem {
                     System.out.println("Username cannot be empty!");
                     continue;
                 }
-                return enterUsername.trim();
+                return enterUsername.trim(); //<Return username value
             } catch (IOException e) {
                 System.out.println("Error");
             }
@@ -170,11 +178,22 @@ public class OrderingManagementSystem {
                 String checkPassword = accountPart[1];
                 String checkCustomerName = accountPart[2];
                 
+                //If your entered email and password matches current looped index[i] of String accounts then login
                 if (enterYourEmail.equals(checkEmail) && enterYourPassword.equals(checkPassword)) {
-                    System.out.println("\nWelcome! " + checkCustomerName);
-                    return i;
+                    try {
+                        System.out.println("\nProcessing\nPlease Wait...");
+                        Thread.sleep(2000);
+                        System.out.println("\nWelcome! " + checkCustomerName);
+                    } catch (InterruptedException e) {
+                    }
+                    return i; //< i will return current i value and will work later since it will never be (-1)
                 } else {
-                    System.out.println("\nInvalid! Try Again\n");
+                    try {
+                        System.out.println("\nProcessing\nPlease Wait...");
+                        Thread.sleep(2000);
+                        System.out.println("\nInvalid! Try Again\n");
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         }
@@ -185,14 +204,30 @@ public class OrderingManagementSystem {
         while (true) {
             try {
                 System.out.println("\nType 'ORDERS' to check your orders");
-                System.out.println("\nType 'PURCHASED' to check your purchased orders");
+                System.out.println("Type 'PURCHASED' to check your purchased orders");
                 System.out.println("=== Menu Options ===\nSelect a food:\n");
                 for (int i = 0; i < menuOptions.length; i++) {
                     System.out.println((i + 1) + ". " + menuOptions[i] + "\nPrice: $" + menuCost[i] + "\n");
                 }
                     
                 String selection = br.readLine();
-                if (selection == null || selection.trim().isEmpty()) break;
+                if (selection == null || selection.trim().isEmpty()) {
+                    while (true) {
+                        System.out.println("Are you sure you want to Logout?");
+                        String input = br.readLine();
+                        if (input == null || input.trim().isEmpty()) break;
+                        
+                        if (input.toUpperCase().trim().equals("YES")){
+                            try {
+                                System.out.println("\nLogging Out\nPlease Wait...");
+                                Thread.sleep(2000);
+                                System.out.println("Logged Out\n");
+                            } catch (InterruptedException e) {
+                            }
+                            return;
+                        }
+                    }
+                }
                 
                 
                 if (selection.toUpperCase().trim().equals("ORDERS")) {
@@ -371,6 +406,12 @@ public class OrderingManagementSystem {
 
                                         if (confirm != null && confirm.equalsIgnoreCase("YES")) {
                                             if (paymentmethod.toUpperCase().trim().equals("CC")) {
+                                                try {
+                                                    System.out.println("\nProcessing Payment\nPlease Wait...");
+                                                    Thread.sleep(2000);
+                                                    System.out.println("Payment Successful\n");
+                                                } catch (InterruptedException e) {
+                                                }
                                                 System.out.println("PAYMENT SUCCESSFUL!");
                                             }
 
