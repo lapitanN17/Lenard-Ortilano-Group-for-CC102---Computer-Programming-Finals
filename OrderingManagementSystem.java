@@ -213,7 +213,7 @@ public class OrderingManagementSystem {
                 String selection = br.readLine();
                 if (selection == null || selection.trim().isEmpty()) {
                     while (true) {
-                        System.out.println("Are you sure you want to Logout?");
+                        System.out.println("Are you sure you want to Logout?\nPress Enter to Confirm");
                         String input = br.readLine();
                         if (input == null || input.trim().isEmpty()) break;
                         
@@ -442,6 +442,7 @@ public class OrderingManagementSystem {
                                             }
 
                                             System.out.println("\nCheckout Complete!");
+                                            done = true;
                                         }
                                         break;
                                 }
