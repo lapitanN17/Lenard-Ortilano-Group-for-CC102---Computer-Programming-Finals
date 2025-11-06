@@ -355,7 +355,7 @@ public class OrderingManagementSystem {
                 for (int i = 0; i < customerCart[loginIndex].length; i++) {
                     if (customerCart[loginIndex][i] == null) continue;
                     String[] customerCartParts = customerCart[loginIndex][i].split(",");
-                    System.out.println("#" + (i + 1) + customerCartParts[0] + "\nPrice: $" + customerCartParts[1] + "\nQuantity: " + customerCartParts[2] + "\n");
+                    System.out.println("#" + (i + 1) + customerCartParts[0] + "\nPrice: $" + (Integer.parseInt(customerCartParts[1]) * Integer.parseInt(customerCartParts[2])) + "\nQuantity: " + customerCartParts[2] + "\n");
                 }
                 System.out.println("\nType 'CHECKOUT' to proceed to checkout\nInput a number to Select an Order");
                 System.out.print("Input: ");
@@ -364,8 +364,16 @@ public class OrderingManagementSystem {
                 
                 boolean done = false;
                 if (input.toUpperCase().trim().equals("CHECKOUT")) {
+                    //Stop checkout if customer cart is empty
+                    if (customerCart[loginIndex][0] == null) {
+                        System.out.println("\nYour cart is empty!");
+                        System.out.println("Press Enter to Return!");
+                        String input2 = br.readLine();
+                        if (input2 == null || input2.trim().isEmpty()) continue;
+                    }
+                    
                     while (!done) {
-                        System.out.print("=== Select ===\n'DINE IN'\n'TAKE OUT'\nInput:");
+                        System.out.print("\n=== Select ===\n'DINE IN'\n'TAKE OUT'\nInput:");
                         String selection = br.readLine();
                         if (selection == null || selection.trim().isEmpty()) break;
 
@@ -395,9 +403,9 @@ public class OrderingManagementSystem {
                                         for (int i = 0; i < customerCart[loginIndex].length; i++) {
                                             if (customerCart[loginIndex][i] == null) continue;
                                             String[] parts = customerCart[loginIndex][i].split(",");
-                                            int price = Integer.parseInt(parts[1]);
+                                            int price = Integer.parseInt(parts[1]) * Integer.parseInt(parts[2]);
                                             total += price;
-                                            System.out.println(parts[0] + "\nPrice: $" + parts[1] + "\nQuantity: " + parts[2] + "\n");
+                                            System.out.println(parts[0] + "\nPrice: $" + (Integer.parseInt(parts[1]) * Integer.parseInt(parts[2])) + "\nQuantity: " + parts[2] + "\n");
                                         }
 
                                         System.out.println("TOTAL: $" + total);
@@ -474,7 +482,7 @@ public class OrderingManagementSystem {
                         String[] customerCartParts = customerCart[loginIndex][i].split(",");
                         
                         if (inputInt == i) {
-                            System.out.println("YOU SELECTED:");
+                            System.out.println("\nYOU SELECTED:");
                             System.out.println("---------------------------------");
                             System.out.println(customerCartParts[0]);
                             System.out.println("Price $:" + customerCartParts[1]);
@@ -537,7 +545,7 @@ public class OrderingManagementSystem {
                                       
     public static void purchasedOrders(BufferedReader br, String[] accounts, String customerEmail, String customerPassword, String customerUsername, int accountCount, String[] menuOptions, String[] menuCost, String loggedInEmail, int loginIndex, String[][] purchasedOrders) {
         while (true) {
-            System.out.println("\n------------ RECEIPT ------------");
+            System.out.println("\n=*=*=*= RECEIPT =*=*=*=\n");
 
             for (int i = 0; i < purchasedOrders[loginIndex].length; i++) {
                 if (purchasedOrders[loginIndex][i] == null) continue;
@@ -546,6 +554,7 @@ public class OrderingManagementSystem {
 
                 System.out.println("\n---------------------------------");
                 System.out.println("ORDER ID: " + parts[0]);
+                System.out.println("---------------------------------\n");
                 
                 //Selection (DINE IN / TAKE OUT)
                 System.out.println(parts[1] + "\n");
